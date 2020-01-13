@@ -9,7 +9,6 @@ Find common time for group meeting
 git clone https://github.com/beenotung/common-time
 cd common-time
 pnpm i || npm i
-npm start
 ```
 
 ## Cli Usage
