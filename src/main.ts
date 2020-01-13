@@ -16,8 +16,8 @@ function processFile(file: string) {
   saveForm(form);
 }
 
-export function start() {
-  const files = getFormFileList();
+export function start(dir = 'res') {
+  const files = getFormFileList(dir);
   for (const file of files) {
     console.log('processing file:', file);
     processFile(file);
