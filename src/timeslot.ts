@@ -49,11 +49,10 @@ export function timeSlotDurationInMinutes(timeSlot: TimeSlot) {
   }
 }
 
-function isNextMinute(before: TimePoint, after: TimePoint) {
-  return timePointToMinutes(before) + 1 === timePointToMinutes(after);
-}
-
-function compactTimeSlots(timeSlots: TimeSlot[]): TimeSlot[] {
+function compactTimeSlots(
+  timeSlots: TimeSlot[],
+  minimum_duration_in_minutes: number,
+): TimeSlot[] {
   if (timeSlots.length === 0) {
     return [];
   }
@@ -62,7 +61,9 @@ function compactTimeSlots(timeSlots: TimeSlot[]): TimeSlot[] {
   res.push(acc);
   for (let i = 1; i < timeSlots.length; i++) {
     const c = timeSlots[i];
-    if (isNextMinute(acc.end, c.start)) {
+    const diff_in_minutes =
+      timePointToMinutes(c.start) - timePointToMinutes(acc.end);
+    if (diff_in_minutes < minimum_duration_in_minutes) {
       acc.end = c.end;
     } else {
       acc = c;
@@ -109,7 +110,7 @@ export class TimeSlotM {
     );
   }
 
-  compact() {
+  compact(minimum_duration_in_minutes: number) {
     const marked_times: TimeSlot[] = [];
     const non_marked_times: TimeSlot[] = [];
     forAllSlot((idx, hour, minute) => {
@@ -124,8 +125,11 @@ export class TimeSlotM {
       }
     });
     return {
-      marked_times: compactTimeSlots(marked_times),
-      non_marked_times: compactTimeSlots(non_marked_times),
+      marked_times: compactTimeSlots(marked_times, minimum_duration_in_minutes),
+      non_marked_times: compactTimeSlots(
+        non_marked_times,
+        minimum_duration_in_minutes,
+      ),
     };
   }
 
