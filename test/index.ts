@@ -1,3 +1,6 @@
 import { start } from '../src/main';
 
-start({ log: true });
+start({
+  dir: 'res',
+  log: true,
+});
