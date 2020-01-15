@@ -1,6 +1,6 @@
 {
   "name": "common-time",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Find common time for group meeting",
   "keywords": [
     "cli",
