@@ -19,7 +19,7 @@ npm i -g common-time
 3. Save the file as csv under a folder
 4. `cd` to the above folder in a terminal
 4. Run `common-time`
-5. The command available and unavailable time will be saved in the csv files
+5. The common available and unavailable timeslot will be saved in the csv files
 
 You can specific the path to folder as `common-time path-to-folder`.
 It will scan all the csv files (non-recursively) in the specific folder.
