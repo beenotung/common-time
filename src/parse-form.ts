@@ -1,4 +1,4 @@
-import { from_csv, to_csv } from '@beenotung/tslib/csv';
+import { from_csv, regular_csv, to_csv } from '@beenotung/tslib/csv';
 
 export interface TimePoint {
   hour: number;
@@ -134,5 +134,6 @@ export function parseForm(file: string, text: string): Form {
 }
 
 export function formToString(form: Form): string {
+  regular_csv(form.csv);
   return to_csv(form.csv);
 }
