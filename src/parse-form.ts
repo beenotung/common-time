@@ -82,9 +82,13 @@ function timePointToString(timePoint: TimePoint): string {
 
 export function timeSlotsToString(timeSlots: TimeSlot[]): string {
   return timeSlots
-    .map(
-      ({ start, end }) =>
-        `${timePointToString(start)}-${timePointToString(end)}`,
+    .map(({ start, end }) =>
+      start.hour === 0 &&
+      start.minute === 0 &&
+      end.hour === 23 &&
+      end.minute === 59
+        ? 'ALL DAY'
+        : `${timePointToString(start)}-${timePointToString(end)}`,
     )
     .join(', ');
 }

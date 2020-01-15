@@ -1,17 +1,29 @@
 import { TimePoint, TimeSlot } from './parse-form';
 
-function toIdx(hour: number, minute: number) {
+const DAY_MINUTES = 24 * 60; // number of minutes in a day
+function toMinutes(hour: number, minute: number) {
   return hour * 60 + minute;
 }
 
-function forEachSlot(
+function timePointToMinutes(timePoint: TimePoint) {
+  return toMinutes(timePoint.hour, timePoint.minute);
+}
+
+export function forEachSlot(
   timeSlot: TimeSlot,
-  f: (idx: number, hour: number, minute: number) => void,
+  f: (minutes: number, hour: number, minute: number) => void,
 ) {
-  for (let h = timeSlot.start.hour; h <= timeSlot.end.hour; h++) {
-    for (let m = timeSlot.start.minute; m <= timeSlot.end.minute; m++) {
-      const idx = toIdx(h, m);
-      f(idx, h, m);
+  let h = timeSlot.start.hour;
+  let m = timeSlot.start.minute;
+  for (let end = false; !end; ) {
+    end = h === timeSlot.end.hour && m === timeSlot.end.minute;
+    const minutes = toMinutes(h, m);
+    f(minutes, h, m);
+    if (m < 59) {
+      m++;
+    } else {
+      m -= 59;
+      h = (h + 1) % 24;
     }
   }
 }
@@ -26,11 +38,38 @@ function forAllSlot(f: (idx: number, hour: number, minute: number) => void) {
   );
 }
 
-export function timeSlotDuration(timeSlot: TimeSlot) {
+export function timeSlotDurationInMinutes(timeSlot: TimeSlot) {
   // return in minutes
-  let acc = 0;
-  forEachSlot(timeSlot, () => acc++);
-  return acc;
+  const start = timePointToMinutes(timeSlot.start);
+  const end = timePointToMinutes(timeSlot.end);
+  if (start <= end) {
+    return end - start;
+  } else {
+    return end + DAY_MINUTES - start;
+  }
+}
+
+function isNextMinute(before: TimePoint, after: TimePoint) {
+  return timePointToMinutes(before) + 1 === timePointToMinutes(after);
+}
+
+function compactTimeSlots(timeSlots: TimeSlot[]): TimeSlot[] {
+  if (timeSlots.length === 0) {
+    return [];
+  }
+  const res: TimeSlot[] = [];
+  let acc = timeSlots[0];
+  res.push(acc);
+  for (let i = 1; i < timeSlots.length; i++) {
+    const c = timeSlots[i];
+    if (isNextMinute(acc.end, c.start)) {
+      acc.end = c.end;
+    } else {
+      acc = c;
+      res.push(acc);
+    }
+  }
+  return res;
 }
 
 export class TimeSlotM {
@@ -42,7 +81,7 @@ export class TimeSlotM {
   private hasSlotList: boolean[] = [];
 
   hasSlot(hour: number, minute: number): boolean {
-    const idx = toIdx(hour, minute);
+    const idx = toMinutes(hour, minute);
     return !!this.hasSlotList[idx];
   }
 
@@ -58,40 +97,35 @@ export class TimeSlotM {
     this.hasSlotList = [];
   }
 
-  compact() {
-    const slotted_times: TimeSlot[] = [];
-    const non_slotted_times: TimeSlot[] = [];
+  markAll() {
+    forAllSlot(idx => (this.hasSlotList[idx] = true));
+  }
 
-    let start: TimePoint = { hour: 0, minute: 0 };
-    let end: TimePoint = { hour: 0, minute: 0 };
-    let hasSlot = this.hasSlot(0, 0);
+  union(timeSlotM: TimeSlotM) {
+    forAllSlot(
+      idx =>
+        (this.hasSlotList[idx] =
+          this.hasSlotList[idx] || timeSlotM.hasSlotList[idx]),
+    );
+  }
+
+  compact() {
+    const marked_times: TimeSlot[] = [];
+    const non_marked_times: TimeSlot[] = [];
     forAllSlot((idx, hour, minute) => {
-      if (idx === 0) {
-        return;
-      }
-      end = { hour, minute };
-      if (this.hasSlot(hour, minute) === hasSlot) {
-        // same state
-        return;
-      }
-      // toggle state
-      if (hasSlot) {
-        slotted_times.push({ start, end });
+      const timeSlot: TimeSlot = {
+        start: { hour, minute },
+        end: { hour, minute },
+      };
+      if (this.hasSlotList[idx]) {
+        marked_times.push(timeSlot);
       } else {
-        non_slotted_times.push({ start, end });
+        non_marked_times.push(timeSlot);
       }
-      hasSlot = !hasSlot;
-      start = end;
     });
-    // clean up last record
-    if (hasSlot) {
-      slotted_times.push({ start, end });
-    } else {
-      non_slotted_times.push({ start, end });
-    }
     return {
-      slotted_times,
-      non_slotted_times,
+      marked_times: compactTimeSlots(marked_times),
+      non_marked_times: compactTimeSlots(non_marked_times),
     };
   }
 

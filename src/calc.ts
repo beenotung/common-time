@@ -1,18 +1,21 @@
-import { Day } from './parse-form';
-import { timeSlotDuration, TimeSlotM } from './timeslot';
+import { Day, TimeSlot } from './parse-form';
+import { timeSlotDurationInMinutes, TimeSlotM } from './timeslot';
+
+const genFilter = (duration_in_minute: number) => (t: TimeSlot) =>
+  timeSlotDurationInMinutes(t) >= duration_in_minute;
+
+const filter = genFilter(15);
 
 export function findCommonTime(day: Day) {
-  const aTimeSlot = new TimeSlotM();
-  if (day.members.some(member => member.a_times.length === 0)) {
-    aTimeSlot.removeAll();
-  } else {
-    day.members.forEach(member =>
-      member.a_times.forEach(aTime => aTimeSlot.add(aTime)),
-    );
-  }
-  const { slotted_times, non_slotted_times } = aTimeSlot.compact();
+  const naTimeSlot = new TimeSlotM();
+  day.members.forEach(member => {
+    const aTimeSlot = new TimeSlotM();
+    member.a_times.forEach(timeSlot => aTimeSlot.add(timeSlot));
+    naTimeSlot.union(aTimeSlot.reverse());
+  });
+  const { marked_times, non_marked_times } = naTimeSlot.compact();
   return {
-    na_times: non_slotted_times.filter(t => timeSlotDuration(t) >= 15),
-    a_times: slotted_times.filter(t => timeSlotDuration(t) >= 15),
+    na_times: marked_times.filter(filter),
+    a_times: non_marked_times.filter(filter),
   };
 }
