@@ -1,12 +1,12 @@
-January ,Cherry,Benno ,Helen,,Common NA,Common A,,Example,Meaning
-14,0900-1230,N/A,N/A,,ALL DAY,,,0900-1200,9am to 12nn available
-15,1600-2200,"0900-1800, 2100-2200",1900-2200,,"00:00-20:59, 22:01-23:59",21:00-22:00,,09:00-12:30,9am to 12.30 nn available
-16,0900-1230,1900-2200,N/A,,ALL DAY,,,ALL DAY,whole day available
-17,1600-2200,0900-1730,N/A,,ALL DAY,,,N/A,whole day not available
-18,,ALL DAY,N/A,,ALL DAY,,,"0900-1200, 1700-1900",9am to 12nn and 5pm to 7pm are available
-19,,ALL DAY,1900-2359,,ALL DAY,,,,
-20,,0900-2200,,,ALL DAY,,,,
-21,,0900-2200,N/A,,ALL DAY,,,,
-22,,0900-2200,,,ALL DAY,,,,
-23,,1900-2200,,,ALL DAY,,,,
-24,,0900-2200,N/A,,ALL DAY,,,,
+January,Alice,Bob,Cherry,Dave,,Common NA,Common A,,Example,Meaning
+14,0900-1200,9:00-16:00,N/A,"0900-1200, 1700-1800, 2100-2200",,ALL DAY,,,0900-1200,9am to 12nn available
+15,1300-1700,18:00-1:00,,0900-1900,,ALL DAY,,,09:00-12:30,9am to 12.30 nn available
+16,1700-2200,18:00-1:00,16:00-22:00,1900-2200,,"00:00-18:59, 22:01-23:59",19:00-22:00,,ALL DAY,whole day available
+17,1300-2200,17:00-1:00,All day,0900-2200,,"00:00-16:59, 22:01-23:59",17:00-22:00,,N/A,whole day not available
+18,2000-2200,N/A,N/A,0900-2200,,ALL DAY,,,"0900-1200, 1700-1900",9am to 12nn and 5pm to 7pm are available
+19,1700-2200,All day,N/A,0900-2200,,ALL DAY,,,,
+20,0900-2200,1700-2200,All day,0900-2200,,"00:00-16:59, 22:01-23:59",17:00-22:00,,,
+21,0900-1500,N/A,All day,0900-2200,,ALL DAY,,,,
+22,0900-2200,N/A,N/A,0900-2200,,ALL DAY,,,,
+23,1400-2200,18:00-1:00,N/A,1900-2200,,ALL DAY,,,,
+24,0900-1500,1700-2200,N/A,0900-2200,,ALL DAY,,,,
