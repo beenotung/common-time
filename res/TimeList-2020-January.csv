@@ -1,0 +1,12 @@
+January ,Cherry,Benno ,Helen,,Common NA,Common A,,Example,Meaning
+14,0900-1230,N/A,N/A,,ALL DAY,,,0900-1200,9am to 12nn available
+15,1600-2200,"0900-1800, 2100-2200",1900-2200,,"00:00-20:59, 22:01-23:59",21:00-22:00,,09:00-12:30,9am to 12.30 nn available
+16,0900-1230,1900-2200,N/A,,ALL DAY,,,ALL DAY,whole day available
+17,1600-2200,0900-1730,N/A,,ALL DAY,,,N/A,whole day not available
+18,,ALL DAY,N/A,,ALL DAY,,,"0900-1200, 1700-1900",9am to 12nn and 5pm to 7pm are available
+19,,ALL DAY,1900-2359,,ALL DAY,,,,
+20,,0900-2200,,,ALL DAY,,,,
+21,,0900-2200,N/A,,ALL DAY,,,,
+22,,0900-2200,,,ALL DAY,,,,
+23,,1900-2200,,,ALL DAY,,,,
+24,,0900-2200,N/A,,ALL DAY,,,

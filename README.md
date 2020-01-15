@@ -4,6 +4,10 @@ Find common time for group meeting
 
 [![npm Package Version](https://img.shields.io/npm/v/common-time.svg?maxAge=2592000)](https://www.npmjs.com/package/common-time)
 
+## Remark
+- Excel template can be downloaded: [TimeList-2020-January.csv](./res/TimeList-2020-January.csv)
+- Timeslot fragments shorter than 15 minutes are skipped by default.
+
 ## Installation
 ```bash
 npm i -g common-time
@@ -84,6 +88,3 @@ start({
   minimum_duration_in_minutes: 15,
 })
 ```
-
-## Remark
-Timeslot fragments shorter than 15 minutes are skipped by default.
