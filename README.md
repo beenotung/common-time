@@ -6,17 +6,19 @@ Find common time for group meeting
 
 ## Installation
 ```bash
-git clone https://github.com/beenotung/common-time
-cd common-time
-pnpm i || npm i
+npm i -g common-time
 ```
 
 ## Cli Usage
 1. Share a sheet with participants, google sheet, USB file, or whatever medium
 2. Each participants input their available timeslot
-3. Save the file as csv under `res` folder
-4. Run `npm start`
+3. Save the file as csv under a folder
+4. `cd` to the above folder in a terminal
+4. Run `common-time`
 5. The command available and unavailable time will be saved in the csv files
+
+You can specific the path to folder as `common-time path-to-folder`.
+It will scan all the csv files (non-recursively) in the specific folder.
 
 ## CSV File Format
 
@@ -77,8 +79,11 @@ TODO write details
 import { start } from 'common-time/src/main'
 
 // inplace file update
-start('your-csv-folder')
+start({
+  dir: 'your-csv-folder',
+  minimum_duration_in_minutes: 15,
+})
 ```
 
 ## Remark
-Timeslot fragment shorter than 15 minutes are skipped
+Timeslot fragments shorter than 15 minutes are skipped by default.

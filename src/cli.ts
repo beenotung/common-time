@@ -1,3 +1,3 @@
 import { start } from './main';
 
-start();
+start({ dir: process.argv[2] || '.' });

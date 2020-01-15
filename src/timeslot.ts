@@ -51,7 +51,7 @@ export function timeSlotDurationInMinutes(timeSlot: TimeSlot) {
 
 function compactTimeSlots(
   timeSlots: TimeSlot[],
-  minimum_duration_in_minutes: number,
+  options: { minimum_duration_in_minutes: number },
 ): TimeSlot[] {
   if (timeSlots.length === 0) {
     return [];
@@ -63,7 +63,7 @@ function compactTimeSlots(
     const c = timeSlots[i];
     const diff_in_minutes =
       timePointToMinutes(c.start) - timePointToMinutes(acc.end);
-    if (diff_in_minutes < minimum_duration_in_minutes) {
+    if (diff_in_minutes < options.minimum_duration_in_minutes) {
       acc.end = c.end;
     } else {
       acc = c;
@@ -110,7 +110,7 @@ export class TimeSlotM {
     );
   }
 
-  compact(minimum_duration_in_minutes: number) {
+  compact(options: { minimum_duration_in_minutes: number }) {
     const marked_times: TimeSlot[] = [];
     const non_marked_times: TimeSlot[] = [];
     forAllSlot((idx, hour, minute) => {
@@ -125,11 +125,8 @@ export class TimeSlotM {
       }
     });
     return {
-      marked_times: compactTimeSlots(marked_times, minimum_duration_in_minutes),
-      non_marked_times: compactTimeSlots(
-        non_marked_times,
-        minimum_duration_in_minutes,
-      ),
+      marked_times: compactTimeSlots(marked_times, options),
+      non_marked_times: compactTimeSlots(non_marked_times, options),
     };
   }
 
